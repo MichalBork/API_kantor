@@ -1,23 +1,17 @@
 package kantor.backend.kantor_api.service;
 
-import java.io.IOException;
-import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kantor.backend.kantor_api.domain.Nbp;
 import kantor.backend.kantor_api.model.NbpDTO;
 import kantor.backend.kantor_api.repos.NbpRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import static java.lang.System.exit;
 
 
 @Service
@@ -34,6 +28,42 @@ public class NbpService {
                 .stream()
                 .map(nbp -> mapToDTO(nbp, new NbpDTO()))
                 .collect(Collectors.toList());
+    }
+
+    public List<NbpDTO> findAllByNewest() {
+        return nbpRepository.findAll(Sort.by("tradingDate").descending())
+                .stream()
+                .map(nbp -> mapToDTO(nbp, new NbpDTO()))
+                .collect(Collectors.toList());
+    }
+
+    //when date is today add element to list
+    public List<NbpDTO> findAllByDate() {
+        LocalDate date = checkWhatDateIsNewest();
+        List<NbpDTO> nbpDTOList = findAll();
+        List<NbpDTO> nbpDTOListToReturn = new ArrayList();
+        for (NbpDTO nbpDTO : nbpDTOList) {
+            if (nbpDTO.getTradingDate().equals(date)) {
+                nbpDTOListToReturn.add(nbpDTO);
+            }
+        }
+        return nbpDTOListToReturn;
+    }
+
+    public LocalDate checkWhatDateIsNewest() {
+        List<NbpDTO> sortedList = findAllByNewest();
+        LocalDate newestDate = sortedList.get(0).getTradingDate();
+        LocalDate today = LocalDate.now();
+        if (newestDate.equals(today)) {
+        } else {
+            do {
+                today = today.minusDays(1);
+                if (today.equals(newestDate)) {
+                    break;
+                }
+            } while (true);
+        }
+        return today;
     }
 
     public NbpDTO get(final Long id) {

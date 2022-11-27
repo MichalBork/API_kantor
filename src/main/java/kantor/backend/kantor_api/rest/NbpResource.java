@@ -27,7 +27,14 @@ public class NbpResource {
     @GetMapping("/all")
     @CrossOrigin(origins = "*")
     public ResponseEntity<List<NbpDTO>> getAllNbps() {
+
         return ResponseEntity.ok(nbpService.findAll());
+    }
+  @GetMapping("/today")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<List<NbpDTO>> getAllNbpsByNewest() {
+
+        return ResponseEntity.ok(nbpService.findAllByDate());
     }
 
     @GetMapping("/{id}")
