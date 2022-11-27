@@ -24,4 +24,5 @@ public class MailerController extends MailerClient {
                 "<b>1000 000 zł</b><br>:P", true);
         return "wysłano";
     }
+
 }

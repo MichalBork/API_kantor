@@ -1,5 +1,9 @@
 package kantor.backend.kantor_api.rest;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import javax.validation.Valid;
 import kantor.backend.kantor_api.model.NbpDTO;
@@ -7,18 +11,11 @@ import kantor.backend.kantor_api.service.NbpService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(value = "/api/nbps", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/nbp", produces = MediaType.APPLICATION_JSON_VALUE)
 public class NbpResource {
 
     private final NbpService nbpService;
@@ -27,7 +24,8 @@ public class NbpResource {
         this.nbpService = nbpService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<List<NbpDTO>> getAllNbps() {
         return ResponseEntity.ok(nbpService.findAll());
     }
@@ -37,17 +35,13 @@ public class NbpResource {
         return ResponseEntity.ok(nbpService.get(id));
     }
 
-    @PostMapping
+    @PostMapping("/create")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Long> createNbp(@RequestBody @Valid final NbpDTO nbpDTO) {
         return new ResponseEntity<>(nbpService.create(nbpDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateNbp(@PathVariable final Long id,
-            @RequestBody @Valid final NbpDTO nbpDTO) {
-        nbpService.update(id, nbpDTO);
-        return ResponseEntity.ok().build();
-    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNbp(@PathVariable final Long id) {
@@ -56,13 +50,5 @@ public class NbpResource {
     }
 
     //send request to nbp api and save data to database
-    @PostMapping("/update")
-    public String updateNbp() {
-       String resp = String.valueOf(nbpService.updateNbp());
-        //nbp update convert to nbpDTO
-
-
-        return resp;
-    }
 
 }

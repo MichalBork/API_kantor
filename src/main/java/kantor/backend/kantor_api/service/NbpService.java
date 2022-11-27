@@ -1,7 +1,12 @@
 package kantor.backend.kantor_api.service;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kantor.backend.kantor_api.domain.Nbp;
 import kantor.backend.kantor_api.model.NbpDTO;
 import kantor.backend.kantor_api.repos.NbpRepository;
@@ -11,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import static java.lang.System.exit;
 
 
 @Service
@@ -69,35 +76,33 @@ public class NbpService {
         return nbp;
     }
 
-    public HttpEntity<String> updateNbp() {
-        RestTemplate restTemplate = new RestTemplate();
+//    public HttpEntity<String> updateNbp() {
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        headers.add("format", "json");
+//
+//
+//        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://api.nbp.pl/api/exchangerates/rates/c/usd/2016-04-04/?format=json");
+//
+//
+//
+//
+//        HttpEntity<?> entity = new HttpEntity<>(headers);
+//
+//        HttpEntity<String> response = restTemplate.exchange(
+//                builder.toUriString(),
+//                HttpMethod.GET,
+//                entity,
+//                String.class);
+//
+//        System.out.print(response.getBody());
+//        exit(0);
+//
+//        return  response;
+//
+//    }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("format", "json");
 
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://api.nbp.pl/api/exchangerates/rates/c/usd/2016-04-04/?format=json");
-
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-
-        HttpEntity<String> response = restTemplate.exchange(
-                builder.toUriString(),
-                HttpMethod.GET,
-                entity,
-                String.class);
-        return response;
-
-    }
-
-    //save data from NBP to database
-    public void saveNbp() {
-        Nbp nbp = new Nbp();
-        nbp.setTradingDate("2016-04-04");
-        nbp.setCurrency("USD");
-        nbp.setBid(3.5);
-        nbp.setAsk(3.6);
-        nbpRepository.save(nbp);
-    }
 }

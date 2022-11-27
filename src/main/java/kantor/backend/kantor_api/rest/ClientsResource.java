@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.web.bind.annotation.CrossOrigin.DEFAULT_ORIGINS;
+
 
 @RestController
 @RequestMapping(value = "/api/clients", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,7 +25,7 @@ public class ClientsResource {
    //Login to account with given login and password json
 
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:3454")
+    @CrossOrigin(origins = "*")
     public UUID login(@RequestBody @Valid final ClientsDTO clientsDTO) {
        if (clientsService.login(clientsDTO.getLogin(), clientsDTO.getPassword()) != null) {
             //return status 200 and userID
