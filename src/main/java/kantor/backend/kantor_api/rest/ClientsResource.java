@@ -2,14 +2,13 @@ package kantor.backend.kantor_api.rest;
 
 import java.util.UUID;
 import javax.validation.Valid;
-import kantor.backend.kantor_api.model.ClientsDTO;
-import kantor.backend.kantor_api.service.ClientsService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.web.bind.annotation.CrossOrigin.DEFAULT_ORIGINS;
+import kantor.backend.kantor_api.MailerController;
+import kantor.backend.kantor_api.model.ClientsDTO;
+import kantor.backend.kantor_api.model.MailRequest;
+import kantor.backend.kantor_api.service.ClientsService;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -27,7 +26,7 @@ public class ClientsResource {
     @PostMapping("/login")
     @CrossOrigin(origins = "*")
     public UUID login(@RequestBody @Valid final ClientsDTO clientsDTO) {
-       if (clientsService.login(clientsDTO.getLogin(), clientsDTO.getPassword()) != null) {
+       if (clientsService.login(clientsDTO.getLogin(), clientsDTO.getPassword()) != null && clientsService.login(clientsDTO.getLogin(), clientsDTO.getPassword()).getStatus() == 1) {
             //return status 200 and userID
             return clientsService.login(clientsDTO.getLogin(), clientsDTO.getPassword()).getId();
        }
@@ -38,13 +37,31 @@ public class ClientsResource {
 
 
 
+    @GetMapping("/{id}")
+    @CrossOrigin(origins = "*")
+    public String activateAccount(@PathVariable final String id) {
+        clientsService.activateAccount(id);
+        System.out.println("Account activated");
+        //redirect to login page
+        //return html page
+        return "<a href=\"http://localhost:3454/?#/login\">Redirect</a>";
+    }
+
+
+    @GetMapping("/get/{id}")
+    @CrossOrigin(origins = "http://localhost:3454")
+    public ClientsDTO getUser(@PathVariable final UUID id) {
+        System.out.println("Get user"+id);
+        return clientsService.get(id);
+    }
 
     //Register new account
     @PostMapping("/register")
     @CrossOrigin(origins = "http://localhost:3454")
-    public ResponseEntity<Void> register(@RequestBody @Valid final ClientsDTO clientsDTO) {
-        clientsService.register(clientsDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public UUID register(@RequestBody @Valid final ClientsDTO clientsDTO, MailerController mailerController, MailRequest mailRequest) {
+
+
+        return   clientsService.register(clientsDTO);
     }
 
 

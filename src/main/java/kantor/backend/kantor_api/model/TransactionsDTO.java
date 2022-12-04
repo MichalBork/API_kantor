@@ -1,25 +1,26 @@
 package kantor.backend.kantor_api.model;
 
 import java.time.LocalDate;
+import java.util.UUID;
 import javax.validation.constraints.Size;
 
 
 public class TransactionsDTO {
 
     @Size(max = 255)
-    private String id;
+    private String id = UUID.randomUUID().toString();
 
     private LocalDate date;
 
     private Double value;
 
-    private Integer type;
+    private Integer type; // 1 - buy, 2 - sell
 
     @Size(max = 255)
-    private String bidName;
+    private String bidName;// cena kupna
 
     @Size(max = 255)
-    private String askName;
+    private String askName; //cena sprzedaży
 
     @Size(max = 255)
     private String client;

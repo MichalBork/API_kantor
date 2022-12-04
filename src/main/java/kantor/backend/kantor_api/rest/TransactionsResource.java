@@ -10,18 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(value = "/api/transactionss", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TransactionsResource {
 
     private final TransactionsService transactionsService;
@@ -31,7 +24,7 @@ public class TransactionsResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<TransactionsDTO>> getAllTransactionss() {
+    public ResponseEntity<List<TransactionsDTO>> getAllTransactions() {
         return ResponseEntity.ok(transactionsService.findAll());
     }
 
@@ -41,6 +34,7 @@ public class TransactionsResource {
     }
 
     @PostMapping
+    @CrossOrigin(origins = "*")
     public ResponseEntity<Void> createTransactions(
             @RequestBody @Valid final TransactionsDTO transactionsDTO,
             final BindingResult bindingResult) throws MethodArgumentNotValidException {

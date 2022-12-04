@@ -29,6 +29,13 @@ public class ClientsService {
                 .collect(Collectors.toList());
     }
 
+    //activate account
+    public void activateAccount(String id) {
+        Clients clients = clientsRepository.findById(UUID.fromString(id)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        clients.setStatus(1);
+        clientsRepository.save(clients);
+    }
+
     public ClientsDTO get(final UUID id) {
         return clientsRepository.findById(id)
                 .map(clients -> mapToDTO(clients, new ClientsDTO()))
@@ -95,8 +102,11 @@ public class ClientsService {
     public UUID register(final ClientsDTO clientsDTO) {
         final Clients clients = new Clients();
         mapToEntity(clientsDTO, clients);
+
         return clientsRepository.save(clients).getId();
     }
+
+
 
     //Create jwt token
 

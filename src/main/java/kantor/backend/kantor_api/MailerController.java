@@ -1,9 +1,14 @@
 package kantor.backend.kantor_api;
 
+import kantor.backend.kantor_api.model.ClientsDTO;
+import kantor.backend.kantor_api.model.MailRequest;
+import kantor.backend.kantor_api.service.ClientsService;
 import kantor.backend.kantor_api.service.mailer.MailerClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.mail.MessagingException;
 
@@ -17,12 +22,20 @@ public class MailerController extends MailerClient {
         this.mailerClient = mailerClient;
     }
 
-    @GetMapping("/sendMail")
-    public String sendMail() throws MessagingException {
+    @Autowired
+    private ClientsService clientsService;
+
+
+    @PostMapping("/sendMail")
+    @CrossOrigin(origins = "*")
+    public String sendMail(@RequestBody MailRequest mailRequest) throws MessagingException {
+        ClientsDTO clientsDTO = clientsService.get(mailRequest.getId());
         mailerClient.sendMail("",
-                "",
-                "<b>1000 000 zł</b><br>:P", true);
-        return "wysłano";
+                mailRequest.getSubject(),
+                mailRequest.getTemplate(), String.valueOf(mailRequest.getId()), true);
+
+        return mailRequest.getTemplate();
     }
+
 
 }
