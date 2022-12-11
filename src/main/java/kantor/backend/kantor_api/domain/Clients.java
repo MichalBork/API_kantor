@@ -1,5 +1,6 @@
 package kantor.backend.kantor_api.domain;
 
+import java.time.LocalDate;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,6 +49,17 @@ public class Clients {
 
     @Column
     private String bankName;
+
+    @Column
+    private LocalDate registrationDate;
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
 
     public UUID getId() {
         return id;

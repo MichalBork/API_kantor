@@ -1,25 +1,30 @@
 package kantor.backend.kantor_api.service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import kantor.backend.kantor_api.domain.Clients;
 import kantor.backend.kantor_api.model.ClientsDTO;
+import kantor.backend.kantor_api.model.TransactionsDTO;
 import kantor.backend.kantor_api.repos.ClientsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 
-
 @Service
 public class ClientsService {
 
     private final ClientsRepository clientsRepository;
+    @Autowired
+    private final TransactionsService transactionsService;
 
-    public ClientsService(final ClientsRepository clientsRepository) {
+    public ClientsService(final ClientsRepository clientsRepository, TransactionsService transactionsService) {
         this.clientsRepository = clientsRepository;
+        this.transactionsService = transactionsService;
     }
 
     public List<ClientsDTO> findAll() {
@@ -71,6 +76,7 @@ public class ClientsService {
         clientsDTO.setStatus(clients.getStatus());
         clientsDTO.setBankAccount(clients.getBankAccount());
         clientsDTO.setBankName(clients.getBankName());
+        clientsDTO.setRegistrationDate(clients.getRegistrationDate());
         return clientsDTO;
     }
 
@@ -85,10 +91,9 @@ public class ClientsService {
         clients.setStatus(clientsDTO.getStatus());
         clients.setBankAccount(clientsDTO.getBankAccount());
         clients.setBankName(clientsDTO.getBankName());
+        clients.setRegistrationDate(clientsDTO.getRegistrationDate());
         return clients;
     }
-
-
 
 
     //Login to account
@@ -107,9 +112,15 @@ public class ClientsService {
     }
 
 
+    //Count all transactions for client
 
-    //Create jwt token
+    public List<TransactionsDTO> countTransactions(final String id) {
+        List<TransactionsDTO> transactionsList = transactionsService.findAll();
 
 
+        return transactionsList.stream()
+                .filter(transaction -> transaction.getClient().equals(id))
+                .collect(Collectors.toList());
 
+    }
 }

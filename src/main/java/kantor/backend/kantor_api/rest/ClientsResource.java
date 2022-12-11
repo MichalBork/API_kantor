@@ -1,5 +1,7 @@
 package kantor.backend.kantor_api.rest;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.validation.Valid;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClientsResource {
 
     private final ClientsService clientsService;
+
 
     public ClientsResource(final ClientsService clientsService) {
         this.clientsService = clientsService;
@@ -64,6 +67,15 @@ public class ClientsResource {
         return   clientsService.register(clientsDTO);
     }
 
+    //data for profile page
+    @GetMapping("/profile/{id}")
+    @CrossOrigin(origins = "http://localhost:3454")
+    public Map getProfile(@PathVariable final UUID id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", clientsService.get(id));
+        map.put("transaction", clientsService.countTransactions(String.valueOf(id)));
+        return map;
+    }
 
 
 }

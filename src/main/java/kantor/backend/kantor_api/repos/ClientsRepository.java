@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClientsRepository extends JpaRepository<Clients, UUID> {
     Optional<Object> findByLoginAndPassword(String login, String password);
+
 }

@@ -1,5 +1,6 @@
 package kantor.backend.kantor_api.model;
 
+import java.time.LocalDate;
 import java.util.UUID;
 import javax.validation.constraints.Size;
 
@@ -35,6 +36,16 @@ public class ClientsDTO {
 
     @Size(max = 255)
     private String bankName;
+
+    private LocalDate registrationDate;
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = LocalDate.now();
+    }
 
     public UUID getId() {
         return id;

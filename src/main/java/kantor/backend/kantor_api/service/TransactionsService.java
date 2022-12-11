@@ -1,6 +1,7 @@
 package kantor.backend.kantor_api.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import kantor.backend.kantor_api.domain.Transactions;
 import kantor.backend.kantor_api.model.TransactionsDTO;
@@ -79,5 +80,9 @@ public class TransactionsService {
     public boolean idExists(final String id) {
         return transactionsRepository.existsByIdIgnoreCase(id);
     }
+
+    //Count all transactions for client
+
+
 
 }
