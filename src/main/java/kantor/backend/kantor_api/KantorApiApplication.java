@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @SpringBootApplication
-@CrossOrigin(origins = "http://localhost:3454")
+@CrossOrigin(origins = "*")
 public class KantorApiApplication {
 
     public static void main(final String[] args) {

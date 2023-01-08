@@ -52,7 +52,7 @@ public class ClientsResource {
 
 
     @GetMapping("/get/{id}")
-    @CrossOrigin(origins = "http://localhost:3454")
+    @CrossOrigin(origins = "*")
     public ClientsDTO getUser(@PathVariable final UUID id) {
         System.out.println("Get user"+id);
         return clientsService.get(id);
@@ -60,7 +60,7 @@ public class ClientsResource {
 
     //Register new account
     @PostMapping("/register")
-    @CrossOrigin(origins = "http://localhost:3454")
+    @CrossOrigin(origins = "*")
     public UUID register(@RequestBody @Valid final ClientsDTO clientsDTO, MailerController mailerController, MailRequest mailRequest) {
 
 
@@ -69,7 +69,7 @@ public class ClientsResource {
 
     //data for profile page
     @GetMapping("/profile/{id}")
-    @CrossOrigin(origins = "http://localhost:3454")
+    @CrossOrigin(origins = "*")
     public Map getProfile(@PathVariable final UUID id) {
         Map<String, Object> map = new HashMap<>();
         map.put("user", clientsService.get(id));

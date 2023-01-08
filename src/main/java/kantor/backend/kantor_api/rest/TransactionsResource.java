@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import kantor.backend.kantor_api.model.TransactionsDTO;
 import kantor.backend.kantor_api.service.TransactionsService;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -35,7 +34,7 @@ public class TransactionsResource {
 
     @PostMapping
     @CrossOrigin(origins = "*")
-    public ResponseEntity<Void> createTransactions(
+    public String createTransactions(
             @RequestBody @Valid final TransactionsDTO transactionsDTO,
             final BindingResult bindingResult) throws MethodArgumentNotValidException {
         if (!bindingResult.hasFieldErrors("id") && transactionsDTO.getId() == null) {
@@ -49,7 +48,7 @@ public class TransactionsResource {
                     this.getClass().getDeclaredMethods()[0], -1), bindingResult);
         }
         transactionsService.create(transactionsDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return transactionsDTO.getId();
     }
 
     @PutMapping("/{id}")

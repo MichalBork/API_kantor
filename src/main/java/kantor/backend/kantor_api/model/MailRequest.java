@@ -11,6 +11,16 @@ public class MailRequest {
 
     private String subject;
 
+    private String mailRecipient;
+
+    public String getMailRecipient() {
+        return mailRecipient;
+    }
+
+    public void setMailRecipient(String mailRecipient) {
+        this.mailRecipient = mailRecipient;
+    }
+
     public String getSubject() {
         return subject;
     }

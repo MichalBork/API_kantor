@@ -30,6 +30,7 @@ public class NbpService {
                 .collect(Collectors.toList());
     }
 
+
     public List<NbpDTO> findAllByNewest() {
         return nbpRepository.findAll(Sort.by("tradingDate").descending())
                 .stream()
@@ -41,7 +42,7 @@ public class NbpService {
     public List<NbpDTO> findAllByDate() {
         LocalDate date = checkWhatDateIsNewest();
         List<NbpDTO> nbpDTOList = findAll();
-        List<NbpDTO> nbpDTOListToReturn = new ArrayList();
+        List<NbpDTO> nbpDTOListToReturn = new ArrayList<>();
         for (NbpDTO nbpDTO : nbpDTOList) {
             if (nbpDTO.getTradingDate().equals(date)) {
                 nbpDTOListToReturn.add(nbpDTO);
@@ -55,6 +56,8 @@ public class NbpService {
         LocalDate newestDate = sortedList.get(0).getTradingDate();
         LocalDate today = LocalDate.now();
         if (newestDate.equals(today)) {
+            return today;
+
         } else {
             do {
                 today = today.minusDays(1);

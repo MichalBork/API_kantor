@@ -30,7 +30,8 @@ public class MailerController extends MailerClient {
     @CrossOrigin(origins = "*")
     public String sendMail(@RequestBody MailRequest mailRequest) throws MessagingException {
         ClientsDTO clientsDTO = clientsService.get(mailRequest.getId());
-        mailerClient.sendMail("",
+        mailRequest.setMailRecipient(clientsDTO.getEmail());
+        mailerClient.sendMail(mailRequest.getMailRecipient(),
                 mailRequest.getSubject(),
                 mailRequest.getTemplate(), String.valueOf(mailRequest.getId()), true);
 

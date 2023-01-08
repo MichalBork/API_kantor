@@ -21,6 +21,7 @@ public class MailerClient {
     private SpringTemplateEngine templateEngine;
 
 
+
     @Autowired
         public void MailService(JavaMailSender javaMailSender) {
             this.javaMailSender = javaMailSender;
@@ -35,17 +36,9 @@ public class MailerClient {
 
             Context context = new Context();
 
-            switch (subject){
-                case "Link aktywacyjny":
-                    String url = "http://localhost:8080/api/clients/" + userID;
-                    context.setVariable("userID", url);
-                    break;
-                case "Link resetu hasła":
-                    //TODO
-                    break;
-                case "Potwierdzenie":
-                    //TODO
-                    break;
+            if (subject.equals("Link aktywacyjny")) {
+                String url = "http://localhost:8080/api/clients/" + userID;
+                context.setVariable("userID", url);
             }
 
             String html = templateEngine.process(text, context);
